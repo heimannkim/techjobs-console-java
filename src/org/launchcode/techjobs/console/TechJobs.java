@@ -2,6 +2,7 @@ package org.launchcode.techjobs.console;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -11,7 +12,7 @@ public class TechJobs {
 
     private static Scanner in = new Scanner(System.in);
 
-    public static void main (String[] args) {
+    public static void main(String[] args) {
 
         // Initialize our field map with key/name pairs
         HashMap<String, String> columnChoices = new HashMap<>();
@@ -61,9 +62,15 @@ public class TechJobs {
                 String searchTerm = in.nextLine();
 
                 if (searchField.equals("all")) {
-                    System.out.println("Search all fields not yet implemented.");
+                    printJobs(JobData.findByValue(searchTerm));
+                    if (JobData.findByValue(searchTerm).isEmpty()) {
+                        System.out.println("No results found");
+                    }
                 } else {
                     printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
+                    if (JobData.findByColumnAndValue(searchField, searchTerm).isEmpty()) {
+                        System.out.println("No results found");
+                    }
                 }
             }
         }
@@ -103,7 +110,7 @@ public class TechJobs {
                 validChoice = true;
             }
 
-        } while(!validChoice);
+        } while (!validChoice);
 
         return choiceKeys[choiceIdx];
     }
@@ -111,6 +118,13 @@ public class TechJobs {
     // Print a list of jobs
     private static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
 
-        System.out.println("printJobs is not implemented yet");
+        for (int r = 0; r < someJobs.size(); r++) {
+            System.out.println("*****");
+            for (Map.Entry<String, String> jobList : someJobs.get(r).entrySet()) {
+                System.out.println(jobList.getKey() + ": " + jobList.getValue());
+            }
+            System.out.println("*****");
+            System.out.println();
+        }
     }
 }
